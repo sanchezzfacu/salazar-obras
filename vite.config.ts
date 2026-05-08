@@ -153,8 +153,35 @@ function vitePluginManusDebugCollector(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
-  // ... resto de configuración
-  build: {
+  plugins,
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    },
+    // Añadir esto para asegurar que resuelve bien los módulos
+    preserveSymlinks: false,
+  },
+  envDir: path.resolve(import.meta.dirname),
+  root: path.resolve(import.meta.dirname, "client"),
+  // AÑADIR ESTA SECCIÓN - optimizar dependencias
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'wouter',
+      'react-hook-form',
+      '@hookform/resolvers',
+      'zod',
+      'clsx',
+      'tailwind-merge',
+      'framer-motion',
+      'axios'
+    ],
+    force: true, // Forzar re-optimización
+  },
+build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
     // Añadir esto para asegurar que los assets se copien bien
@@ -167,5 +194,23 @@ export default defineConfig({
         assetFileNames: "assets/[name]-[hash].[ext]"
       }
     }
+  },
+  server: {
+    port: 3000,
+    strictPort: false,
+    host: true,
+    allowedHosts: [
+      ".manuspre.computer",
+      ".manus.computer",
+      ".manus-asia.computer",
+      ".manuscomputer.ai",
+      ".manusvm.computer",
+      "localhost",
+      "127.0.0.1",
+    ],
+    fs: {
+      strict: true,
+      deny: ["**/.*"],
+    },
   },
 });
