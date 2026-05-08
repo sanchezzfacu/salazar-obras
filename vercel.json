@@ -1,21 +1,13 @@
 {
-  "version": 2,
+  "framework": "vite",
+  "buildCommand": "pnpm run build",
+  "devCommand": "pnpm dev",
+  "installCommand": "pnpm install",
   "outputDirectory": "dist",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
   "routes": [
     {
-      "src": "/assets/(.*)",
-      "dest": "/dist/assets/$1"
-    },
-    {
-      "src": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot)$",
-      "dest": "/dist/$1.$2"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/index.html"
+      "src": "/[^.]+",
+      "dest": "/index.html"
     }
   ]
 }
