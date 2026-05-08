@@ -1,13 +1,13 @@
 {
-  "framework": "vite",
+  "version": 2,
   "buildCommand": "pnpm run build",
-  "devCommand": "pnpm dev",
-  "installCommand": "pnpm install",
-  "outputDirectory": "dist",
-  "routes": [
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "outputDirectory": "dist/public",
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "/[^.]+",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

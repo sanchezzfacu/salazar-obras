@@ -153,69 +153,19 @@ function vitePluginManusDebugCollector(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
-  plugins,
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
-    },
-    // Añadir esto para asegurar que resuelve bien los módulos
-    preserveSymlinks: false,
-  },
-  envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
-  // AÑADIR ESTA SECCIÓN - optimizar dependencias
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'wouter',
-      'react-hook-form',
-      '@hookform/resolvers',
-      'zod',
-      'clsx',
-      'tailwind-merge',
-      'framer-motion',
-      'axios'
-    ],
-    force: true, // Forzar re-optimización
-  },
+  // ... resto de configuración
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    // Añadir esto para mejor manejo de módulos
-    commonjsOptions: {
-      include: [/node_modules/],
-      transformMixedEsModules: true,
-    },
+    // Añadir esto para asegurar que los assets se copien bien
+    assetsDir: "assets",
     rollupOptions: {
-      // Asegurar que todo se bundlea correctamente
-      external: [],
       output: {
-        manualChunks: {
-          'vendor': ['react', 'react-dom', 'wouter'],
-          'ui': ['framer-motion', 'clsx', 'tailwind-merge'],
-        },
-      },
-    },
-  },
-  server: {
-    port: 3000,
-    strictPort: false,
-    host: true,
-    allowedHosts: [
-      ".manuspre.computer",
-      ".manus.computer",
-      ".manus-asia.computer",
-      ".manuscomputer.ai",
-      ".manusvm.computer",
-      "localhost",
-      "127.0.0.1",
-    ],
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
+        manualChunks: undefined,
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]"
+      }
+    }
   },
 });
