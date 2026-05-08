@@ -181,7 +181,7 @@ export default function Home() {
           {/* Soluciones Comerciales */}
           <div className="mt-16 bg-foreground text-white rounded-lg p-12">
             <div className="flex items-start gap-6">
-              <ShoppingCart className="w-12 h-12 text-accent flex-shrink-0 mt-1" />
+              <ShoppingCart className="w-12 h-12 text-accent shrink-0 mt-1" />
               <div>
                 <h3 className="text-2xl font-bold mb-3">Soluciones Comerciales</h3>
                 <p className="text-gray-300 mb-4">
