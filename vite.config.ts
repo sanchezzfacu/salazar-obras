@@ -160,16 +160,49 @@ export default defineConfig({
       "@shared": path.resolve(import.meta.dirname, "shared"),
       "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
+    // Añadir esto para asegurar que resuelve bien los módulos
+    preserveSymlinks: false,
   },
   envDir: path.resolve(import.meta.dirname),
   root: path.resolve(import.meta.dirname, "client"),
+  // AÑADIR ESTA SECCIÓN - optimizar dependencias
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'wouter',
+      'react-hook-form',
+      '@hookform/resolvers',
+      'zod',
+      'clsx',
+      'tailwind-merge',
+      'framer-motion',
+      'axios'
+    ],
+    force: true, // Forzar re-optimización
+  },
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Añadir esto para mejor manejo de módulos
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      // Asegurar que todo se bundlea correctamente
+      external: [],
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'wouter'],
+          'ui': ['framer-motion', 'clsx', 'tailwind-merge'],
+        },
+      },
+    },
   },
   server: {
     port: 3000,
-    strictPort: false, // Will find next available port if 3000 is busy
+    strictPort: false,
     host: true,
     allowedHosts: [
       ".manuspre.computer",
